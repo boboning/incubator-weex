@@ -42,6 +42,7 @@
 #import "WXNetworkHandler.h"
 #import "WXAppMonitorHandler.h"
 #import "WXCrashReporter.h"
+#import "WXCrashAdapterHandler.h"
 
 #define AppKey @"24728542"
 #define AppVersion @"1.0.0"
@@ -131,6 +132,7 @@
     [WXSDKEngine registerHandler:[WXConfigCenterDefaultImpl new] withProtocol:@protocol(WXConfigCenterProtocol)];
     [WXSDKEngine registerHandler:[WXNetworkHandler new] withProtocol:@protocol(WXResourceRequestHandler)];
     [WXSDKEngine registerHandler:[WXAppMonitorHandler new] withProtocol:@protocol(WXAppMonitorProtocol)];
+    [WXSDKEngine registerHandler:[WXCrashAdapterHandler new] withProtocol:@protocol(WXJSExceptionProtocol)];
     
     [WXSDKEngine registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];

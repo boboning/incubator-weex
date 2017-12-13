@@ -20,6 +20,7 @@
 		590833131FE1173C00A28C29 /* WXAppMonitorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 590833121FE1173C00A28C29 /* WXAppMonitorHandler.m */; };
 		590833161FE1177A00A28C29 /* WXRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 590833151FE1177A00A28C29 /* WXRecorder.m */; };
 		590833191FE1178C00A28C29 /* WXCrashReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 590833171FE1178C00A28C29 /* WXCrashReporter.m */; };
+		5908331C1FE13EC000A28C29 /* WXCrashAdapterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5908331A1FE13EBF00A28C29 /* WXCrashAdapterHandler.m */; };
 		59EA0DA71D2E7D19004F904A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59EA0DA61D2E7D19004F904A /* Images.xcassets */; };
 		741DFE091DDDD519009B020F /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 741DFE081DDDD519009B020F /* libstdc++.tbd */; };
 		747DF6681E2F176A005C53A8 /* UIView+UIThreadCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 747DF6671E2F176A005C53A8 /* UIView+UIThreadCheck.m */; };
@@ -94,6 +95,8 @@
 		590833151FE1177A00A28C29 /* WXRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXRecorder.m; sourceTree = "<group>"; };
 		590833171FE1178C00A28C29 /* WXCrashReporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXCrashReporter.m; sourceTree = "<group>"; };
 		590833181FE1178C00A28C29 /* WXCrashReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXCrashReporter.h; sourceTree = "<group>"; };
+		5908331A1FE13EBF00A28C29 /* WXCrashAdapterHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXCrashAdapterHandler.m; sourceTree = "<group>"; };
+		5908331B1FE13EBF00A28C29 /* WXCrashAdapterHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXCrashAdapterHandler.h; sourceTree = "<group>"; };
 		59EA0DA61D2E7D19004F904A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		5AF8846546DAC65CAC038806 /* Pods-WeexDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeexDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeexDemo/Pods-WeexDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		741DFE081DDDD519009B020F /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
@@ -208,6 +211,8 @@
 				590833011FE1170E00A28C29 /* WXImgLoaderDefaultImpl.m */,
 				590833111FE1173C00A28C29 /* WXAppMonitorHandler.h */,
 				590833121FE1173C00A28C29 /* WXAppMonitorHandler.m */,
+				5908331B1FE13EBF00A28C29 /* WXCrashAdapterHandler.h */,
+				5908331A1FE13EBF00A28C29 /* WXCrashAdapterHandler.m */,
 			);
 			name = handler;
 			path = extend/handler;
@@ -630,6 +635,7 @@
 				590833131FE1173C00A28C29 /* WXAppMonitorHandler.m in Sources */,
 				590833091FE1170E00A28C29 /* WXSelectComponent.m in Sources */,
 				590833101FE1170E00A28C29 /* WXSyncTestModule.m in Sources */,
+				5908331C1FE13EC000A28C29 /* WXCrashAdapterHandler.m in Sources */,
 				74CC79EB1C2B9E4700829368 /* UIViewController+WXDemoNaviBar.m in Sources */,
 				775BEE831C1E8ECC008D1629 /* AppDelegate.m in Sources */,
 				DCABAFF41D029685001C8592 /* WXATViewHierarchyPlugin.m in Sources */,
