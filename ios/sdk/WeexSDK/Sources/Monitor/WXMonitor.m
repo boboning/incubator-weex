@@ -62,9 +62,9 @@ static WXThreadSafeMutableDictionary *globalPerformanceDict;
     
     dict[kEndKey] = @(CACurrentMediaTime() * 1000);
     
-    if (tag == WXPTAllRender) {
-        [self performanceFinish:instance];
-    }
+//    if (tag == WXPTAllRender) {
+//        [self performanceFinish:instance];
+//    }
 }
 
 + (void)performancePoint:(WXPerformanceTag)tag didSetValue:(double)value withInstance:(WXSDKInstance *)instance
@@ -92,13 +92,15 @@ static WXThreadSafeMutableDictionary *globalPerformanceDict;
 
 + (void)performanceFinish:(WXSDKInstance *)instance
 {
-    NSMutableDictionary *commitDict = [NSMutableDictionary dictionaryWithCapacity:WXPTEnd+4];
+    NSMutableDictionary *commitDict = [NSMutableDictionary dictionary];
     
     commitDict[BIZTYPE] = instance.bizType ?: @"";
     commitDict[PAGENAME] = instance.pageName ?: @"";
     
     commitDict[WXSDKVERSION] = WX_SDK_VERSION;
     commitDict[JSLIBVERSION] = [WXAppConfiguration JSFrameworkVersion];
+    commitDict[JSLIBSIZE] = [NSNumber numberWithUnsignedInteger:[WXAppConfiguration JSFrameworkLibSize]];
+
     if (instance.userInfo[@"weex_bundlejs_connectionType"]) {
         commitDict[@"connectionType"] = instance.userInfo[@"weex_bundlejs_connectionType"];
     }
@@ -120,7 +122,7 @@ static WXThreadSafeMutableDictionary *globalPerformanceDict;
         }
     }
     WXPerformBlockOnComponentThread(^{
-        commitDict[@"componentCount"] = @([instance numberOfComponents]);
+        commitDict[COMPONENTCOUNT] = @([instance numberOfComponents]);
         WXPerformBlockOnMainThread(^{
             [self commitPerformanceWithDict:commitDict instance:instance];
         });
@@ -166,6 +168,21 @@ static WXThreadSafeMutableDictionary *globalPerformanceDict;
     }
     
     commitDict[@"instanceId"] = [instance instanceId]?:@"";
+    
+    //new performance point
+    if (!commitDict[SCREENRENDERTIME] && commitDict[TOTALTIME]) {
+        commitDict[SCREENRENDERTIME] = commitDict[TOTALTIME];
+    }
+    
+    commitDict[CALLCREATEINSTANCETIME] = commitDict[COMMUNICATETIME];
+    commitDict[COMMUNICATETOTALTIME] = commitDict[TOTALTIME];
+    
+    if (commitDict[SCREENRENDERTIME]) {
+        commitDict[FSRENDERTIME] = commitDict[SCREENRENDERTIME];
+    }
+    else {
+        commitDict[FSRENDERTIME] = @"-1";
+    }
     
     id<WXAppMonitorProtocol> appMonitor = [WXHandlerFactory handlerForProtocol:@protocol(WXAppMonitorProtocol)];
     if (appMonitor && [appMonitor respondsToSelector:@selector(commitAppMonitorArgs:)]){

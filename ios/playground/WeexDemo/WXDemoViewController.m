@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,11 +18,8 @@
  */
 
 #import "WXDemoViewController.h"
-#import <WeexSDK/WXSDKInstance.h>
-#import <WeexSDK/WXSDKEngine.h>
-#import <WeexSDK/WXUtility.h>
-#import <WeexSDK/WXDebugTool.h>
-#import <WeexSDK/WXSDKManager.h>
+#import <WeexSDK/WeexSDK.h>
+#import "WXAppMonitorHandler.h"
 #import "UIViewController+WXDemoNaviBar.h"
 #import "DemoDefine.h"
 #import "WXPrerenderManager.h"
@@ -162,13 +159,25 @@
     };
     
     _instance.renderFinish = ^(UIView *view) {
-         WXLogDebug(@"%@", @"Render Finish...");
+        WXLogDebug(@"%@", @"Render Finish...");
         [weakSelf updateInstanceState:WeexInstanceAppear];
     };
     
     _instance.updateFinish = ^(UIView *view) {
         WXLogDebug(@"%@", @"Update Finish...");
     };
+    
+    _instance.onJSDownloadedFinish = ^(WXResourceResponse *response, WXResourceRequest *request, NSData *data, NSError *error) {
+        NSDictionary *allHeaderFields = [(NSHTTPURLResponse*)response allHeaderFields];
+        NSString *requestType = [allHeaderFields valueForKey:@"X-RequestType"];
+        if (requestType && [requestType isEqualToString:@"PackageApp"]) {
+            weakSelf.instance.userInfo[@"weex_bundlejs_requestType"] = @"packageApp";
+            weakSelf.instance.userInfo[@"weex_bundlejs_connectionType"] = @"packageApp";
+        }
+        
+        [WXAppMonitorHandler monitorWithNetWorkResponse:response instance:weakSelf.instance response:request data:data error:error];
+    };
+    
     if (!self.url) {
         WXLogError(@"error: render url is nil");
         return;
@@ -241,24 +250,24 @@
 
 #pragma mark - localBundle
 /*- (void)loadLocalBundle:(NSURL *)url
-{
-    NSURL * localPath = nil;
-    NSMutableArray * pathComponents = nil;
-    if (self.url) {
-        pathComponents =[NSMutableArray arrayWithArray:[url.absoluteString pathComponents]];
-        [pathComponents removeObjectsInRange:NSRangeFromString(@"0 3")];
-        [pathComponents replaceObjectAtIndex:0 withObject:@"bundlejs"];
-        
-        NSString *filePath = [NSString stringWithFormat:@"%@/%@",[NSBundle mainBundle].bundlePath,[pathComponents componentsJoinedByString:@"/"]];
-        localPath = [NSURL fileURLWithPath:filePath];
-    }else {
-        NSString *filePath = [NSString stringWithFormat:@"%@/bundlejs/index.js",[NSBundle mainBundle].bundlePath];
-        localPath = [NSURL fileURLWithPath:filePath];
-    }
-    
-    NSString *bundleUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/bundlejs/",[NSBundle mainBundle].bundlePath]].absoluteString;
-     [_instance renderWithURL:localPath options:@{@"bundleUrl":bundleUrl} data:nil];
-}*/
+ {
+ NSURL * localPath = nil;
+ NSMutableArray * pathComponents = nil;
+ if (self.url) {
+ pathComponents =[NSMutableArray arrayWithArray:[url.absoluteString pathComponents]];
+ [pathComponents removeObjectsInRange:NSRangeFromString(@"0 3")];
+ [pathComponents replaceObjectAtIndex:0 withObject:@"bundlejs"];
+ 
+ NSString *filePath = [NSString stringWithFormat:@"%@/%@",[NSBundle mainBundle].bundlePath,[pathComponents componentsJoinedByString:@"/"]];
+ localPath = [NSURL fileURLWithPath:filePath];
+ }else {
+ NSString *filePath = [NSString stringWithFormat:@"%@/bundlejs/index.js",[NSBundle mainBundle].bundlePath];
+ localPath = [NSURL fileURLWithPath:filePath];
+ }
+ 
+ NSString *bundleUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/bundlejs/",[NSBundle mainBundle].bundlePath]].absoluteString;
+ [_instance renderWithURL:localPath options:@{@"bundleUrl":bundleUrl} data:nil];
+ }*/
 
 #pragma mark - load local device bundle
 - (NSURL*)testURL:(NSString*)url
@@ -289,3 +298,4 @@
 }
 
 @end
+

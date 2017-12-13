@@ -33,8 +33,18 @@
 #import <WeexSDK/WeexSDK.h>
 #import <AVFoundation/AVFoundation.h>
 #import <ATSDK/ATManager.h>
+#import <UT/UTAnalytics.h>
+#import <AliHATBAdapter/AliHAAdapter.h>
+#import <TBCrashReporter/TBCrashReporter.h>
+
 #import "WXConfigCenterProtocol.h"
 #import "WXConfigCenterDefaultImpl.h"
+#import "WXNetworkHandler.h"
+#import "WXAppMonitorHandler.h"
+#import "WXCrashReporter.h"
+
+#define AppKey @"24728542"
+#define AppVersion @"1.0.0"
 
 @interface AppDelegate ()
 @end
@@ -49,6 +59,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
+    [[TBCrashReporterMonitor sharedMonitor] registerCrashLogMonitor:[[WXCrashReporter alloc] init]];
+    [[UTAnalytics getInstance] setAppKey:AppKey index:0];
+    [AliHATBAdapter initWithAppKey:AppKey appVersion:AppVersion channel:nil plugins:nil nick:nil];
+
     [self initWeexSDK];
     
     self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:[self demoController]];
@@ -115,7 +129,8 @@
     [WXSDKEngine registerHandler:[WXImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
     [WXSDKEngine registerHandler:[WXEventModule new] withProtocol:@protocol(WXEventModuleProtocol)];
     [WXSDKEngine registerHandler:[WXConfigCenterDefaultImpl new] withProtocol:@protocol(WXConfigCenterProtocol)];
-
+    [WXSDKEngine registerHandler:[WXNetworkHandler new] withProtocol:@protocol(WXResourceRequestHandler)];
+    [WXSDKEngine registerHandler:[WXAppMonitorHandler new] withProtocol:@protocol(WXAppMonitorProtocol)];
     
     [WXSDKEngine registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];

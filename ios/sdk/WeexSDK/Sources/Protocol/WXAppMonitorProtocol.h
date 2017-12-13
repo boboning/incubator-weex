@@ -23,6 +23,7 @@
 #define PAGENAME            @"pageName"
 #define WXSDKVERSION        @"WXSDKVersion"
 #define JSLIBVERSION        @"JSLibVersion"
+#define JSLIBSIZE           @"JSLibSize"
 #define WXREQUESTTYPE       @"requestType"
 #define WXCONNECTIONTYPE    @"connectionType"
 #define WXCUSTOMMONITORINFO @"customMonitorInfo"
@@ -36,6 +37,11 @@
 #define SCREENRENDERTIME    @"screenRenderTime"
 #define TOTALTIME           @"totalTime"
 #define FIRSETSCREENJSFEXECUTETIME  @"firstScreenJSFExecuteTime"
+#define COMPONENTCOUNT      @"componentCount"
+
+#define CALLCREATEINSTANCETIME  @"callCreateInstanceTime"
+#define COMMUNICATETOTALTIME    @"communicateTotalTime"
+#define FSRENDERTIME    @"fsRenderTime"
 
 #define CACHEPROCESSTIME    @"cacheProcessTime"
 #define CACHERATIO          @"cacheRatio"
